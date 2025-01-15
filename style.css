@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Essa regra CSS é uma "reset" básica usada para garantir que os elementos da página comecem com um estilo uniforme, independentemente do navegador. Vamos detalhar cada parte:
+
+1. * (seleção universal)
+Seleciona todos os elementos da página.
+2. margin: 0;
+Remove todas as margens padrão dos elementos. Alguns navegadores aplicam margens automáticas, especialmente em elementos como <body>, <h1> e <p>.
+3. padding: 0;
+Remove todo o preenchimento (espaçamento interno) padrão dos elementos. Sem isso, alguns navegadores podem aplicar preenchimentos automáticos, como em <ul> e <ol>.
+4. box-sizing: border-box;
+Altera o comportamento padrão do modelo de caixa (box model).
+Por padrão, o CSS define box-sizing como content-box, o que significa que o width e o height incluem apenas o conteúdo, mas não o padding ou as borders.
+Com border-box, o width e o height incluem o conteúdo, o padding e as borders. Isso facilita a definição de tamanhos fixos de elementos sem cálculos complexos.
+Por que usar isso?
+Consistência: Diferentes navegadores aplicam estilos padrão de maneira ligeiramente diferente. Essa reset reduz variações imprevisíveis.
+Facilidade no design: Com box-sizing: border-box, o cálculo de larguras e alturas fica mais intuitivo. */ 
+
+.game-board { /* div onde o jogo ficará dentro */
+    /* width: 80%; */
+    width: 100%;
+    height: 500px;
+    /* border: 1px solid #333; */
+    border-bottom: 15px solid rgb(32, 155, 35);
+    margin: 0 auto;
+    position: relative; /* a imagem respeite as delimitacões do quarto (div) */
+
+    overflow: hidden; /* faz com que tudo o que saia do game-board seja ocultado ao invés de ser exibido do lado externo  (experimentar colocar right em 100%, por exemplo) */
+
+    background: linear-gradient(#87CEEB, #E0F6FF)
+    
+}
+
+.pipe {
+    position: absolute; /* faz com que as imagens sejam independentes, nenhuma imagem interfere no comportamento da outra */
+
+    bottom: 0; /* faz com que a imagem do cano fique fixa lá em baixo */
+    width: 80px;
+    /* right: 0; -> Retirado após a insercão de "@keyframes pipe-animation */
+   animation: pipe-animation 2s infinite linear ;  
+   /* left: 120px; (medida em que o cano encosta no Mario) */
+   
+   /* 
+    
+    2s condiz á velocidade que a animacão tramitará da direita para o lado oposto 
+    
+    Infinite significa que a animacão se repetirá toda vez que chegar em 100% ao invés de se locomover até 100% uma única vez e parar
+
+    Linear serve para padronizar o "timing" da animacão. Sem a inclusão deste, haverá uma diferenca sutil na velocidade da animacão ao decorrer da locomocão
+    */
+}
+
+.mario {
+    width: 150px; /* diminuir tamanho do Mario */
+    position: absolute; /* para não interfirir em outras imagens */
+    bottom: 0;
+    /* animation: jump 500ms ease-out; 
+    
+    Removeremos o atributo "animation" da classe ".mario" para inserirmos na nova classe ".jump". Na nova classe iremos configurar o Mario para pular apenas quando houver um comando nosso. 
+    
+    *ease-out serve para que o Mario caia de forma mais sutil */
+    
+    
+    /* Teremos que criar a animacão do Mario pulando em que ele sai do bottom 0, vai até uns 180px e volta para 0. Tudo isto será estabelecido em ".jump" 
+    
+    E, quando quisermos que ele pule, temos que ir até o HTML, na parte em que se encontra a imagem do Mario e inserir o "Jump" na "class: mario", tal como: "class: mario jump"*/ ;
+}
+
+.jump {
+    animation: jump 500ms ease-out;
+
+}
+
+.clouds {
+    position: absolute;
+    width: 550px;
+    animation: clouds-animation 20s infinite linear;
+}
+
+/* Parte das animacões - Keyframes */
+
+@keyframes pipe-animation {
+    from {
+        /* right: 0; */
+        right: -80px; 
+    }
+
+    to {
+        right: 100%;
+    }
+}
+
+/* o right de 0 a 100% fará com que a animacão comece à direita do nosso game-board até o final do outro lado 
+
+Observe que houve um ajuste em que o right de 0 foi substituído por -80px. Isso acontece porque, com o right de 0, a imagem do cano surge do nada do lado inferior direito de game-board. Para que a imagem surga de fora da margem e percorra da direita ao outro lado, temos que pegar a largura total da margem (80px) e negativar (-80px) para que isso seja possível.
+
+Para que a animacão surta efeito, inserir "animation: pipe-animation (tempo)" em ".pipe"
+*/
+
+ @keyframes jump {
+    
+    0% {
+        bottom: 0;
+    }
+
+    40% {
+        bottom: 180px;
+    }
+
+    50% {
+        bottom: 180px;
+    }
+
+    60% {
+        bottom: 180px;
+    }
+
+    100% {
+        bottom: 0;
+    }
+
+    /* Quando a animacão estiver em zero, a imagem do Mario ficará em "bottom 0", quando estiver em 50% a imagem ficará em bottom 100px e, por último, quando a animacão estiver em 100%, a imagem do Mário voltará para bottom 0.
+    
+    Colocar "animation: jump (tempo);" em ".mario" para ver o resultado
+    
+    Após isso, alguns pontos intermediários podem ser acrescentados para que a animacão ao pular demore um pouco no ar e caia. Vamos incluir 40% e 60%*/
+}
+
+@keyframes clouds-animation {
+    from {
+        right: -550px;
+    }
+
+    to {
+        right: 100px;
+    }
+}
